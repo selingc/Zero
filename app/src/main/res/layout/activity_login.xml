@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     android:orientation="vertical"
     >
 
@@ -12,18 +13,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_login"
+=======
+    android:orientation="vertical">
+
+    <TextView
+        android:textSize="32sp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log In"
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
         android:id="@+id/textViewLogin" />
 
     <EditText android:id="@+id/email_login"
         android:layout_gravity="center"
+<<<<<<< HEAD
         android:layout_width="212dp"
+=======
+        android:layout_width="match_parent"
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:hint="@string/email_field" />
 
     <EditText android:id="@+id/password_login"
         android:layout_gravity="center"
+<<<<<<< HEAD
         android:layout_width="209dp"
+=======
+        android:layout_width="match_parent"
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:hint="@string/password_field" />

@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/Zero-master.iml" filepath="$PROJECT_DIR$/Zero-master.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/Zero.iml" filepath="$PROJECT_DIR$/Zero.iml" />
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

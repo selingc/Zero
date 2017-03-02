@@ -13,23 +13,32 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+<<<<<<< HEAD
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+=======
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
 
 public class CreateAccountActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private static final String TAG = "CreateAccount";
+<<<<<<< HEAD
     private FirebaseDatabase database;
     private DatabaseReference usersRef;
 
+=======
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+<<<<<<< HEAD
         database = FirebaseDatabase.getInstance();
         usersRef = database.getReference("users");
 
+=======
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
     }
 
     public void createUserWithEmailAndPassword(View view){
@@ -42,8 +51,11 @@ public class CreateAccountActivity extends AppCompatActivity {
                 Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                 if(task.isSuccessful()){
+<<<<<<< HEAD
                     String userEmail = auth.getCurrentUser().getEmail();
                     addUser(userEmail);
+=======
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
                     accountCreated();
                 }else{
                     Toast.makeText(CreateAccountActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
@@ -52,6 +64,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         });
     }
 
+<<<<<<< HEAD
     public void addUser(String email){
         User newUser = new User(email);
         DatabaseReference newUserRef = usersRef.push();
@@ -59,6 +72,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
 
+=======
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
     public void accountCreated(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

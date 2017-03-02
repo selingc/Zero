@@ -2,16 +2,23 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1">
+=======
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
 
     <TextView
         android:textSize="32sp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:text="@string/app_homePhrase"
         android:id="@+id/textView" />
 
@@ -21,4 +28,9 @@
         android:text="@string/button_toSignout"
         android:onClick="signoutUser" />
 
+=======
+        android:text="Home"
+        android:id="@+id/textView" />
+
+>>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
 </LinearLayout>
