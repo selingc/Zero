@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "219725972824",
+    "firebase_url": "https://zero-5e2ff.firebaseio.com",
+    "project_id": "zero-5e2ff",
+    "storage_bucket": "zero-5e2ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219725972824:android:0682cff2f90c5ef1",
+        "android_client_info": {
+          "package_name": "com.jello.zero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219725972824-nheah5dbvsouqnpd6p4lg1936lat52ft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiehFHarG0fwMFeUTz7sVWvLaqnLLUPnE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

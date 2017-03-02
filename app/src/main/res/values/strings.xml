@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Zero</string>
+    <string name="app_homePhrase">Stay Alert, Stay Safe</string>
+    <string name="email_field">Email Address</string>
+    <string name="password_field">Password</string>
+    <string name="button_login">Log In</string>
+    <string name="button_signup">Create Account</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="button_toLogin">Have An Account</string>
+    <string name="button_toSignup">Create An Account</string>
+    <string name="button_toSignout">Sign Out</string>
+</resources>
