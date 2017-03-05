@@ -6,14 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-<<<<<<< HEAD
         <item name="android:colorBackground">@color/colorPrimary</item>
     </style>
 
     <style name="Zero" parent="AppTheme" />
-
-=======
-    </style>
-
->>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
 </resources>

@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">Zero</string>
-<<<<<<< HEAD
     <string name="app_homePhrase">Stay Alert, Stay Safe</string>
-=======
->>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
     <string name="email_field">Email Address</string>
     <string name="password_field">Password</string>
     <string name="button_login">Log In</string>
@@ -11,8 +8,5 @@
     <string name="auth_failed">Authentication failed</string>
     <string name="button_toLogin">Have An Account</string>
     <string name="button_toSignup">Create An Account</string>
-<<<<<<< HEAD
     <string name="button_toSignout">Sign Out</string>
-=======
->>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
 </resources>

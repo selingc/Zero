@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jello.zero">
-<<<<<<< HEAD
-=======
-
->>>>>>> 086cda73fb8f1a2c1a8952f2bc6da63c9d99d360
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
