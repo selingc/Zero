@@ -15,6 +15,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
+        <activity android:name=".CreateAlertActivity" />
         <activity android:name=".LoginActivity"></activity>
     </application>
 

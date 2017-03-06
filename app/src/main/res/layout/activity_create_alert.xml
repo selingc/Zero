@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/name_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/alert_name_field" />
+    <EditText
+        android:id="@+id/category_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/alert_category_field" />
+    <EditText
+        android:id="@+id/location_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/alert_location_field" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/alert_create_button"
+        android:onClick="createAlert" />
+
+    <Button
+        android:id="@+id/button5"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="111dp"
+        android:layout_height="wrap_content"
+        android:text="@string/alert_back_button"
+        android:layout_gravity="center_horizontal"
+        android:onClick="switchToMain"/>
+</LinearLayout>

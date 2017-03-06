@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "219725972824-n0ban6pnn9kdi8668k4t1ggn06dld75n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jello.zero",
+            "certificate_hash": "2fa82289502953e5120cc53115ce9b484e7f8542"
+          }
+        },
+        {
+          "client_id": "219725972824-287r7kl57obasuhq5skrbrt7f0fs6v28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jello.zero",
+            "certificate_hash": "3bc865c239460374ee5f696dae30b38e0600c823"
+          }
+        },
+        {
           "client_id": "219725972824-nheah5dbvsouqnpd6p4lg1936lat52ft.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219725972824-nheah5dbvsouqnpd6p4lg1936lat52ft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -15,9 +15,29 @@
         android:text="@string/app_homePhrase"
         android:id="@+id/textView" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_alert_list"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+    <ListView
+        android:id="@+id/alertListView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
     <Button
+        android:id="@+id/button2"
+        android:layout_width="151dp"
+        android:layout_height="wrap_content"
+        android:onClick="switchToCreateAlert"
+        android:text="@string/main_create_alert" />
+
+    <Button
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_toSignout"
-        android:onClick="signoutUser"/>
+        android:onClick="signoutUser"
+        android:text="@string/button_toSignout" />
 </LinearLayout>

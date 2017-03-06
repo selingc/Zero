@@ -9,4 +9,11 @@
     <string name="button_toLogin">Have An Account</string>
     <string name="button_toSignup">Create An Account</string>
     <string name="button_toSignout">Sign Out</string>
+    <string name="main_alert_list">List of Alerts:</string>
+    <string name="main_create_alert">Create An Alert</string>
+    <string name="alert_name_field">Name</string>
+    <string name="alert_category_field">Category</string>
+    <string name="alert_location_field">Location</string>
+    <string name="alert_create_button">Create Alert</string>
+    <string name="alert_back_button">Back</string>
 </resources>
