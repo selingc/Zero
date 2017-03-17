@@ -26,9 +26,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference nameRef = ref.child("alerts");
+    DatabaseReference alertRef = ref.child("alerts");
     private ArrayList<String> alertList = new ArrayList<>();
     private ListView listView;
+    ChildEventListener alertListener;
+    private ArrayAdapter<String> theAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
         auth.addAuthStateListener(authListener);
 
         listView = (ListView)findViewById(R.id.alertListView);
-        final ArrayAdapter<String> theAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,alertList);
+        theAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,alertList);
         listView.setAdapter(theAdapter);
-        nameRef.addChildEventListener(new ChildEventListener() {
+
+        alertListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Alert newAlert = dataSnapshot.getValue(Alert.class);
-                String text = newAlert.name+"\n"+newAlert.category+"\n"+newAlert.location+newAlert.latitude+","+newAlert.longitude;
+                String text = newAlert.name + "\n" + newAlert.category + "\n" + newAlert.location + newAlert.latitude + ", " + newAlert.longitude;
                 alertList.add(text);
                 theAdapter.notifyDataSetChanged();
             }
@@ -75,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {}
-        });
+        };
+
+        alertRef.addChildEventListener(alertListener);
     }
 
     @Override
@@ -84,17 +90,21 @@ public class MainActivity extends AppCompatActivity {
         if(authListener != null){
             auth.removeAuthStateListener(authListener);
         }
+        alertRef.removeEventListener(alertListener);
+        alertList.clear();
+        theAdapter.notifyDataSetChanged();
     }
 
     public void notLoggedIn(){
         Intent intent = new Intent(this, CreateAccountActivity.class);
         startActivity(intent);
     }
-    public void switchToCreateAlert(View view)
-    {
+
+    public void switchToCreateAlert(View view){
         Intent intent = new Intent(this, CreateAlertActivity.class);
         startActivity(intent);
     }
+
     public void signoutUser(View view){
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
