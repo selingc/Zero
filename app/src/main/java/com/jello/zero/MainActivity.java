@@ -1,7 +1,10 @@
 package com.jello.zero;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Alert newAlert = dataSnapshot.getValue(Alert.class);
-
-                String text = newAlert.name+"\n"+newAlert.category+"\n"+newAlert.location;
+                String text = newAlert.name+"\n"+newAlert.category+"\n"+newAlert.location+newAlert.latitude+","+newAlert.longitude;
                 alertList.add(text);
                 theAdapter.notifyDataSetChanged();
             }
@@ -97,6 +99,5 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-
     }
 }
