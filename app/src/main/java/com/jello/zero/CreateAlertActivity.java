@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
  * Created by hoangphat1908 on 3/5/2017.
  */
 
-public class CreateAlertActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback {
+public class CreateAlertActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private FirebaseDatabase database;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authListener;
@@ -114,12 +114,5 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
-        }
     }
 }
