@@ -1,0 +1,9 @@
+Way to load data
+1/ Manual: 
+Run rssParser with desire rss feed url
+Parser will produce feed.json
+go to firebase console under feed to import
+
+2/ do command: npm install -g firebase-import
+   run rssParser
+   do command: firebase-import --database_ulr https://zero-5e2ff.firebaseio.com/ --path /feed --json feed.json
