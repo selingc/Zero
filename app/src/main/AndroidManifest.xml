@@ -17,6 +17,13 @@
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".CreateAlertActivity" />
         <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".ViewAlertActivity"></activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA5bp8cSUjLOVmx_nnJig2KPQPZC-4NlBE" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>

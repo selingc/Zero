@@ -6,13 +6,12 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -33,10 +32,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private FirebaseAuth.AuthStateListener authListener;
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference alertRef = ref.child("alerts");
-    private ArrayList<String> alertList = new ArrayList<>();
+    private ArrayList<Alert> alertList = new ArrayList<>();
     private ListView listView;
     ChildEventListener alertListener;
-    private ArrayAdapter<String> theAdapter;
+    private ArrayAdapter<Alert> theAdapter;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
@@ -74,9 +73,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         auth.addAuthStateListener(authListener);
 
         listView = (ListView)findViewById(R.id.alertListView);
-        theAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,alertList);
+        theAdapter = new ArrayAdapter<Alert>(this,R.layout.alert_row,alertList);
         listView.setAdapter(theAdapter);
-
         alertListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey){
@@ -91,9 +89,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }else{
                     distance = "Distance away from you cannot be detected.";
                 }
-
-                String text = newAlert.name + "\n" + newAlert.category + "\n" + newAlert.location + "Coordinates: " + newAlert.latitude + ", " + newAlert.longitude + "\n" + distance;
-                alertList.add(text);
+                newAlert.setKey(dataSnapshot.getKey());
+                newAlert.setDistance(distance);
+                String text = newAlert.toString();
+                alertList.add(newAlert);
                 theAdapter.notifyDataSetChanged();
             }
             @Override
@@ -108,8 +107,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
-
         alertRef.addChildEventListener(alertListener);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                    long arg3)
+            {
+                Alert value = (Alert)adapter.getItemAtPosition(position);
+                System.out.print(value.name);
+                Intent intent = new Intent(MainActivity.this, ViewAlertActivity.class);
+                intent.putExtra("key", value.getKey());
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override

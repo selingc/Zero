@@ -10,6 +10,8 @@ public class Alert {
     public String location;
     public double latitude;
     public double longitude;
+    private String distance;
+    private String key;
     public Alert(){};
     public Alert(String name, String category, String location, double latitude, double longitude){
         this.name = name;
@@ -19,5 +21,26 @@ public class Alert {
             this.latitude = latitude;
             this.longitude = longitude;
         }
+    }
+    public void setKey(String key)
+    {
+        this.key = key;
+    }
+    public String getKey()
+    {
+        return key;
+    }
+    public void setDistance(String distance)
+    {
+        this.distance = distance;
+    }
+    public String getLoc()
+    {
+        return distance;
+    }
+    @Override
+    public String toString()
+    {
+        return name + "\n" + category + "\n" + location + "Coordinates: " + latitude + ", " + longitude + "\n" + distance;
     }
 }
