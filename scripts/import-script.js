@@ -1,5 +1,5 @@
 var admin =  require('firebase-admin');
-var json = require('/' + process.argv[2]);
+var json = require('./'+process.argv[3]);
 
 var serviceAccount = require("./zero-service-account.json");
 
@@ -8,9 +8,9 @@ admin.initializeApp({
   databaseURL: "https://zero-5e2ff.firebaseio.com"
 });
 
-admin.database().ref("test").child("testing").set(true);
+var dbRef = admin.database().ref(process.argv[2]);
 
-for(var i=0; i<json.length; i++){
-	var key = admin.database().ref("alerts").push().key;
-	admin.database().ref("alerts").child(key).set(json[i]);
+for(var i = 0; i < json.length; i++){
+	var key = dbRef.push().key;
+	dbRef.child(key).set(json[i]);
 }
