@@ -14,13 +14,7 @@
         android:text="@string/main_alert_list"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/app_homePhrase"
-        android:textSize="32sp" />
+
 
     <ListView
         android:id="@+id/alertListView"

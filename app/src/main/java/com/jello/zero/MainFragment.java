@@ -33,39 +33,30 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public abstract class MainFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
-    private static final String TAG = "MainActivity";
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
+    protected static final String TAG = "MainActivity";
+    protected FirebaseAuth auth;
+    protected FirebaseAuth.AuthStateListener authListener;
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference alertRef = ref.child("alerts");
-    private ArrayList<Alert> alertList = new ArrayList<>();
-    private ListView listView;
+    protected ArrayList<Alert> alertList = new ArrayList<>();
+    protected ListView listView;
     ChildEventListener alertListener;
-    private ArrayAdapter<Alert> theAdapter;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    protected ArrayAdapter<Alert> theAdapter;
+    protected GoogleApiClient mGoogleApiClient;
+    protected Location mLastLocation;
+    protected static final String ARG_SECTION_NUMBER = "section_number";
 
     public MainFragment() {
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static MainFragment newInstance(int sectionNumber) {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    public abstract MainFragment newInstance(int sectionNumber);
+    public abstract String getAlertReference();
+    public abstract Alert retrieveAlert(DataSnapshot snapshot);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -128,6 +119,7 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
     @Override
     public void onStart(){
         super.onStart();
+        alertRef = ref.child(getAlertReference());
         mGoogleApiClient.connect();
         auth.addAuthStateListener(authListener);
 
@@ -137,7 +129,9 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
         alertListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey){
-                Alert newAlert = dataSnapshot.getValue(Alert.class);
+
+                Alert newAlert = retrieveAlert(dataSnapshot);
+
                 String distance;
 
                 if(mLastLocation != null){
@@ -174,9 +168,8 @@ public class MainFragment extends Fragment implements GoogleApiClient.Connection
                                     long arg3)
             {
                 Alert value = (Alert)adapter.getItemAtPosition(position);
-                System.out.print(value.name);
                 Intent intent = new Intent(MainFragment.this.getActivity(), ViewAlertActivity.class);
-                intent.putExtra("key", value.getKey());
+                intent.putExtra("alert", value);
                 startActivity(intent);
             }
         });
