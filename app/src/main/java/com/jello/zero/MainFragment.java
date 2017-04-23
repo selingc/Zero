@@ -85,34 +85,6 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                     .build();
         }
 
-        Button buttonToCreateAlert = (Button) rootView.findViewById(R.id.createAlertButton);
-        Button buttonToSignOut = (Button) rootView.findViewById(R.id.signOutButton);
-
-        buttonToCreateAlert.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainFragment.this.getActivity(), CreateAlertActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        buttonToSignOut.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MainFragment.this.getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-
-
         return rootView;
     }
 

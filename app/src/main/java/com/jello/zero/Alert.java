@@ -47,6 +47,6 @@ public class Alert implements Serializable{
     @Override
     public String toString()
     {
-        return name + "\n" + category + "\n" + location + "Coordinates: " + latitude + ", " + longitude + "\n" + distance;
+        return name + "\n" + category + "\nLocation: " + location + "\nCoordinates: " + latitude + ", " + longitude + "\n" + distance;
     }
 }
