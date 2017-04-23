@@ -26,150 +26,86 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private static final String TAG = "MainActivity";
-    private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authListener;
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference alertRef = ref.child("alerts");
-    private ArrayList<Alert> alertList = new ArrayList<>();
-    private ListView listView;
-    ChildEventListener alertListener;
-    private ArrayAdapter<Alert> theAdapter;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+
+
+
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+
+    /**
+     * The {@link android.support.v4.view.PagerAdapter} that will provide
+     * fragments for each of the sections. We use a
+     * {@link FragmentPagerAdapter} derivative, which will keep every
+     * loaded fragment in memory. If this becomes too memory intensive, it
+     * may be best to switch to a
+     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     */
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    /**
+     * The {@link ViewPager} that will host the section contents.
+     */
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        auth = FirebaseAuth.getInstance();
-        authListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                }else{
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    notLoggedIn();
-                }
-            }
-        };
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart(){
-        super.onStart();
-        mGoogleApiClient.connect();
-        auth.addAuthStateListener(authListener);
-
-        listView = (ListView)findViewById(R.id.alertListView);
-        theAdapter = new ArrayAdapter<Alert>(this,R.layout.alert_row,alertList);
-        listView.setAdapter(theAdapter);
-        alertListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey){
-                Alert newAlert = dataSnapshot.getValue(Alert.class);
-                String distance;
-
-                if(mLastLocation != null){
-                    Location alertLocation = new Location("");
-                    alertLocation.setLatitude(newAlert.latitude);
-                    alertLocation.setLongitude(newAlert.longitude);
-                    distance = Math.round(alertLocation.distanceTo(mLastLocation)) + " meters away from you!";
-                }else{
-                    distance = "Distance away from you cannot be detected.";
-                }
-                newAlert.setKey(dataSnapshot.getKey());
-                newAlert.setDistance(distance);
-                String text = newAlert.toString();
-                alertList.add(newAlert);
-                theAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
-        alertRef.addChildEventListener(alertListener);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
-                Alert value = (Alert)adapter.getItemAtPosition(position);
-                System.out.print(value.name);
-                Intent intent = new Intent(MainActivity.this, ViewAlertActivity.class);
-                intent.putExtra("key", value.getKey());
-                startActivity(intent);
-            }
-        });
-
-
-    }
-
-    @Override
-    public void onStop(){
-        super.onStop();
-        mGoogleApiClient.disconnect();
-        if(authListener != null){
-            auth.removeAuthStateListener(authListener);
-        }
-        alertRef.removeEventListener(alertListener);
-        alertList.clear();
-        theAdapter.notifyDataSetChanged();
-    }
-
-    public void notLoggedIn(){
-        Intent intent = new Intent(this, CreateAccountActivity.class);
-        startActivity(intent);
-    }
-
-    public void switchToCreateAlert(View view){
-        Intent intent = new Intent(this, CreateAlertActivity.class);
-        startActivity(intent);
-    }
-
-    public void signoutUser(View view){
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-            return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }
