@@ -8,8 +8,8 @@ public class Alert {
     public String name;
     public String category;
     public String location;
-    public double latitude;
-    public double longitude;
+    public double latitude = -1;
+    public double longitude = -1;
     private String distance;
     private String key;
     public Alert(){};
@@ -41,6 +41,6 @@ public class Alert {
     @Override
     public String toString()
     {
-        return name + "\n" + category + "\n" + location + "Coordinates: " + latitude + ", " + longitude + "\n" + distance;
+        return name + "\n" + category + "\n" + location+"\n" + "Coordinates: " + latitude + ", " + longitude + "\n" + distance;
     }
 }

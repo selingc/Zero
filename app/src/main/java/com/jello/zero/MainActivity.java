@@ -16,7 +16,9 @@ import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -36,8 +38,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ListView listView;
     ChildEventListener alertListener;
     private ArrayAdapter<Alert> theAdapter;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+
+    Location mCurrentLocation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +58,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
             }
         };
-
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
+    }
+/*
+    protected synchronized void buildGoogleApiClient() {
+        Log.d(TAG, "buildGoogleAPiClient");
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
+    protected void createLocationRequest(){
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    protected void buildLocationSettingsRequest() {
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
+    }
+
+*/
     @Override
     public void onStart(){
         super.onStart();
-        mGoogleApiClient.connect();
         auth.addAuthStateListener(authListener);
 
         listView = (ListView)findViewById(R.id.alertListView);
@@ -81,11 +97,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Alert newAlert = dataSnapshot.getValue(Alert.class);
                 String distance;
 
-                if(mLastLocation != null){
+                if(mCurrentLocation != null){
                     Location alertLocation = new Location("");
                     alertLocation.setLatitude(newAlert.latitude);
                     alertLocation.setLongitude(newAlert.longitude);
-                    distance = Math.round(alertLocation.distanceTo(mLastLocation)) + " meters away from you!";
+                    distance = Math.round(alertLocation.distanceTo(mCurrentLocation)) + " meters away from you!";
                 }else{
                     distance = "Distance away from you cannot be detected.";
                 }
@@ -128,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onStop(){
         super.onStop();
-        mGoogleApiClient.disconnect();
         if(authListener != null){
             auth.removeAuthStateListener(authListener);
         }
@@ -154,13 +169,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-            return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    public void onConnected(Bundle bundle) {
+
     }
 
     @Override
