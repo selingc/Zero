@@ -1,10 +1,12 @@
 package com.jello.zero;
 
+import java.io.Serializable;
+
 /**
  * Created by hoangphat1908 on 3/5/2017.
  */
-
-public class Alert {
+@SuppressWarnings("serial")
+public class Alert implements Serializable{
     public String name;
     public String category;
     public String location;
@@ -21,6 +23,10 @@ public class Alert {
             this.latitude = latitude;
             this.longitude = longitude;
         }
+    }
+    public Alert(String name, String category, String location, String latitude, String longitude){
+            this(name, category, location, latitude != null? Double.valueOf(latitude): 0, longitude != null? Double.valueOf(longitude) : 0);
+
     }
     public void setKey(String key)
     {
@@ -41,6 +47,6 @@ public class Alert {
     @Override
     public String toString()
     {
-        return name + "\n" + category + "\n" + location+"\n" + "Coordinates: " + latitude + ", " + longitude + "\n" + distance;
+        return name + "\n" + category + "\nLocation: " + location + "\nCoordinates: " + latitude + ", " + longitude + "\n" + distance;
     }
 }
