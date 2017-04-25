@@ -53,5 +53,3 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     }
 
 }
-
-

@@ -10,8 +10,8 @@ public class Alert implements Serializable{
     public String name;
     public String category;
     public String location;
-    public double latitude;
-    public double longitude;
+    public double latitude = -1;
+    public double longitude = -1;
     private String distance;
     private String key;
     public Alert(){};

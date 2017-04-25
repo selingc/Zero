@@ -21,6 +21,9 @@
         <activity android:name=".CreateAlertActivity" />
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".ViewAlertActivity"></activity>
+        <service
+            android:name=".GeocodeIntentService"
+            android:exported="false"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
