@@ -63,21 +63,18 @@ public class GeocodeIntentService extends IntentService {
                 errorMsg = "Service not available";
                 Log.d(TAG, errorMsg, e);
             }
+        }else{
+            try{
+                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            }catch(IOException ex){
+                errorMsg = "IOException";
+                Log.d(TAG, errorMsg, ex);
+            }catch(IllegalArgumentException ex2){
+                errorMsg = "Illegal argument exception";
+                Log.d(TAG, errorMsg, ex2);
+            }
         }
 
-        /*
-        try{
-
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-        }catch(IOException ex){
-            errorMsg = "IO exception";
-            Log.d(TAG, errorMsg, ex);
-        }catch(IllegalArgumentException ex2){
-            errorMsg = "Illegal argument exception";
-            Log.d(TAG, errorMsg+":"+location.getLatitude()+","+location.getLongitude(), ex2);
-        }
-*/
         //address not found
         if(addresses == null || addresses.size() == 0) {
             if (errorMsg.isEmpty()) {
