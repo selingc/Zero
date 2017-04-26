@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "Rss link: "
+read link
+echo "Filename: "
+read filename
+echo "Database child path: "
+read child
+python ./rssParser.py $link $filename
+node import-script.js $child $filename &
