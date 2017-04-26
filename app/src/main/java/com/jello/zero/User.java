@@ -10,8 +10,9 @@ public class User {
 
     public User(){}
 
-    public User(String username){
+    public User(String username, String zipcode){
         this.username = username;
+        this.zipcode = zipcode;
     }
 
 }
