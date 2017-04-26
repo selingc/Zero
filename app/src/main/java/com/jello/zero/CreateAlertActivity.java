@@ -46,6 +46,7 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
     private String name;
     private String category;
     private String location;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
         alertsRef = database.getReference("alerts");
         Log.d(TAG, "onCreate");
         mResultReceiver = new AddressResultReceiver(null);
-        /*
+
         if (mGoogleApiClient == null) {
             Log.d(TAG, "OnCreate try to get api client");
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -63,15 +64,17 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-        }*/
+        }
     }
 
     protected void onStart() {
+        mGoogleApiClient.connect();
         super.onStart();
         Log.d(TAG, "onConnect");
     }
 
     protected void onStop() {
+        mGoogleApiClient.disconnect();
         super.onStop();
         Log.d(TAG, "onStop");
     }
@@ -116,8 +119,18 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+            return;
+            }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            String latitude = String.valueOf(mLastLocation.getLatitude());
+            String longitude = String.valueOf(mLastLocation.getLongitude());
+            ((EditText) findViewById(R.id.location_alert)).setHint("Type or use current location: " + latitude + "," + longitude);
+        }
     }
 
 

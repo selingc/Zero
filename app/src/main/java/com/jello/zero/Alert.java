@@ -25,8 +25,7 @@ public class Alert implements Serializable{
         }
     }
     public Alert(String name, String category, String location, String latitude, String longitude){
-            this(name, category, location, latitude != null? Double.valueOf(latitude): 0, longitude != null? Double.valueOf(longitude) : 0);
-
+            this(name, category, location, latitude != null && !latitude.equals("n/a") ? Double.valueOf(latitude): 0, longitude != null &&  !longitude.equals("n/a") ? Double.valueOf(longitude) : 0);
     }
     public void setKey(String key)
     {
