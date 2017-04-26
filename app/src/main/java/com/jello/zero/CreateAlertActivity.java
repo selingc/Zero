@@ -147,13 +147,17 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
     public void getCurrentCoordinatesBaseOnLoc(String location){
         Intent intent = new Intent(this, GeocodeIntentService.class);
         intent.putExtra(Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.ADDRESS);
 
         if(location.length()==0){
-            Toast.makeText(this, "Please enter an address name", Toast.LENGTH_LONG).show();
-            return;
+            intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.COORDINATE);
+            intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+            Log.d(TAG, "get location by current location "+ mLastLocation);
+        }else{
+            intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.ADDRESS);
+            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, location);
+            Log.d(TAG, "get location by name");
         }
-        intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, location);
+
         Log.d(TAG, "starting service");
         startService(intent);
     }

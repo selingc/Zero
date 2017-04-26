@@ -66,6 +66,7 @@ public class GeocodeIntentService extends IntentService {
         }else{
             try{
                 addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+               // addresses = geocoder.getFromLocation(37.3351874, -121.8810715, 1);
             }catch(IOException ex){
                 errorMsg = "IOException";
                 Log.d(TAG, errorMsg, ex);
