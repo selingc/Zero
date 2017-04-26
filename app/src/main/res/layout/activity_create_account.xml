@@ -29,6 +29,14 @@
         android:hint="@string/password_field"
         android:inputType="textPassword" />
 
+    <EditText
+        android:id="@+id/zip_code_signup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Zip Code (to receive alerts)"
+        android:inputType="textPostalAddress" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

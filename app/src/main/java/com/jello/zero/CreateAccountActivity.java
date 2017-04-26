@@ -34,14 +34,14 @@ public class CreateAccountActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         String email = ((EditText)findViewById(R.id.email_signup)).getText().toString();
         String password = ((EditText)findViewById(R.id.password_signup)).getText().toString();
+        final String zipcode = ((EditText)findViewById(R.id.zip_code_signup)).getText().toString();
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                 if(task.isSuccessful()){
-                    String userEmail = auth.getCurrentUser().getEmail();
-                    addUser(userEmail);
+                    addUser(auth.getCurrentUser().getUid(), auth.getCurrentUser().getEmail(), zipcode);
                     accountCreated();
                 }else{
                     Toast.makeText(CreateAccountActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
@@ -50,10 +50,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         });
     }
 
-    public void addUser(String email){
-        User newUser = new User(email);
-        DatabaseReference newUserRef = usersRef.push();
-        newUserRef.setValue(newUser);
+    public void addUser(String uid, String email, String zipcode){
+        User newUser = new User(email, zipcode);
+        usersRef.child(uid).setValue(newUser);
     }
 
     public void accountCreated(){
