@@ -2,12 +2,15 @@ package com.jello.zero;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -50,6 +54,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
     protected static final String ARG_SECTION_NUMBER = "section_number";
+    private AddressResultReceiver mResultReceiver;
 
     public MainFragment() {
     }
@@ -92,6 +97,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
     public void onStart(){
         super.onStart();
         alertRef = ref.child(getAlertReference());
+        mResultReceiver = new AddressResultReceiver(null);
         mGoogleApiClient.connect();
         auth.addAuthStateListener(authListener);
 
@@ -173,6 +179,11 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
             return;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Intent intent = new Intent(this.getActivity(), GeocodeIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.COORDINATE);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        getActivity().startService(intent);
     }
 
     @Override
@@ -183,6 +194,28 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler){
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, final Bundle resultData) {
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                final Address address = resultData.getParcelable(Constants.RESULT_DATA);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, address.getLocality() + address.getAdminArea());
+                        FirebaseMessaging.getInstance().subscribeToTopic(address.getLocality().replaceAll(" ", "_")+"_"+address.getAdminArea().replaceAll(" ", "_"));
+                    }
+                });
+            }else{
+                Log.d(TAG, "Unable to find longitude latitude");
+            }
+        }
     }
 }
 

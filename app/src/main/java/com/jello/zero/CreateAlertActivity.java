@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by hoangphat1908 on 3/5/2017.
  */
@@ -46,6 +49,7 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
     private String name;
     private String category;
     private String location;
+    private String cityState;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -106,6 +110,17 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
 
         DatabaseReference newAlertRef = alertsRef.push();
         newAlertRef.setValue(newAlert);
+        sendNotificationToLocation(cityState, newAlertRef.getKey());
+    }
+
+    public void sendNotificationToLocation(String cityState, String key){
+        DatabaseReference notificationRef = database.getReference("notificationRequests");
+
+        Map notification = new HashMap<>();
+        notification.put("location", cityState);
+        notification.put("message", key);
+
+        notificationRef.push().setValue(notification);
     }
 
     public void alertCreated() {
@@ -179,8 +194,10 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
                         longitude = address.getLongitude();
                         latitude = address.getLatitude();
                         location = resultData.getString(Constants.RESULT_DATA_KEY);
+                        cityState = address.getLocality().replaceAll(" ", "_")+"_"+address.getAdminArea().replaceAll(" ", "_");
                         Log.d(TAG, "on receive result "+longitude+", "+latitude+", "+location);
                         addAlert(name, category, location, latitude, longitude);
+
                         alertCreated();
                     }
                 });
