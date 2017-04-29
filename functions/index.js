@@ -12,14 +12,13 @@ var request = require('request');
 var API_KEY = "AAAAMyiwRVg:APA91bF0hCjJgtiBzw0CRyte0gJ3lEUJPYYGAfBnvluPFIThMNF5VoV2Tdz7tvDSYM20v9J0u9Arw7tLZLldScIgJvAtbozIk1CDYXfT_tbqpHig1B9nziXmr8b7WHZeA6XxKG3HsrS3"; // Your Firebase Cloud Messaging Server API key
 
 // Fetch the service account key JSON file contents
-var serviceAccount = require("./scripts/zero-sevice-account.json");
+var serviceAccount = require("./serviceAccount.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://zero-5e2ff.firebaseio.com"
 });
-admin.initializeApp(functions.config().firebase);
 
 ref = admin.database().ref();
 

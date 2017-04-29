@@ -179,11 +179,13 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
             return;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        Intent intent = new Intent(this.getActivity(), GeocodeIntentService.class);
-        intent.putExtra(Constants.RECEIVER, mResultReceiver);
-        intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.COORDINATE);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
-        getActivity().startService(intent);
+        if(mLastLocation != null) {
+            Intent intent = new Intent(this.getActivity(), GeocodeIntentService.class);
+            intent.putExtra(Constants.RECEIVER, mResultReceiver);
+            intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.COORDINATE);
+            intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+            getActivity().startService(intent);
+        }
     }
 
     @Override
