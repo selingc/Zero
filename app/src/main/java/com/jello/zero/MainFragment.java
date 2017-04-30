@@ -8,8 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,6 +55,9 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
     protected static final String ARG_SECTION_NUMBER = "section_number";
+    private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private RecyclerApdapter recyclerApdapter;
 
     public MainFragment() {
     }
@@ -95,9 +103,23 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
         mGoogleApiClient.connect();
         auth.addAuthStateListener(authListener);
 
-        listView = (ListView)getView().findViewById(R.id.alertListView);
-        theAdapter = new ArrayAdapter<Alert>(this.getActivity(),R.layout.alert_row,alertList);
-        listView.setAdapter(theAdapter);
+
+        //  listView = (ListView)getView().findViewById(R.id.alertListView);
+       // theAdapter = new ArrayAdapter<Alert>(this.getActivity(),R.layout.alert_row,alertList);
+       // listView.setAdapter(theAdapter);
+
+        mRecyclerView = (RecyclerView)getView().findViewById(R.id.recyclerView);
+        mLinearLayoutManager = new LinearLayoutManager(this.getActivity());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerApdapter = new RecyclerApdapter(alertList);
+        mRecyclerView.setAdapter(recyclerApdapter);
+
+        //add item divider
+        DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), mLinearLayoutManager.getOrientation());
+        mRecyclerView.addItemDecoration(mDividerItemDecoration);
+
+
         alertListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey){
@@ -118,7 +140,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                 newAlert.setDistance(distance);
                 String text = newAlert.toString();
                 alertList.add(newAlert);
-                theAdapter.notifyDataSetChanged();
+                recyclerApdapter.notifyDataSetChanged();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
@@ -133,18 +155,21 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
             public void onCancelled(DatabaseError databaseError) {}
         };
         alertRef.addChildEventListener(alertListener);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+
+
+        /*
+        mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position,
                                     long arg3)
             {
-                Alert value = (Alert)adapter.getItemAtPosition(position);
+                Alert value = (Alert)recyclerApdapter.getItemAtPosition(position);
                 Intent intent = new Intent(MainFragment.this.getActivity(), ViewAlertActivity.class);
                 intent.putExtra("alert", value);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
@@ -156,7 +181,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
         }
         alertRef.removeEventListener(alertListener);
         alertList.clear();
-        theAdapter.notifyDataSetChanged();
+        recyclerApdapter.notifyDataSetChanged();
     }
 
     public void notLoggedIn(){

@@ -147,22 +147,22 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
     public void getCurrentCoordinatesBaseOnLoc(String location){
         Intent intent = new Intent(this, GeocodeIntentService.class);
         intent.putExtra(Constants.RECEIVER, mResultReceiver);
-
-        if(location.length()==0){
-            intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.COORDINATE);
-            intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+        //you always need these 2
+        if(location.length()==0){ //do this if you want to pass in mlastlocation
+            intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.COORDINATE); //type of input coordinate or name
+            intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation); // pass in coordinate if choose coordinate
             Log.d(TAG, "get location by current location "+ mLastLocation);
-        }else{
+        }else{ //or this if you want to pass in name of location
             intent.putExtra(Constants.FETCH_TYPE_EXTRA, Constants.ADDRESS);
-            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, location);
+            intent.putExtra(Constants.LOCATION_NAME_DATA_EXTRA, location);  //pass in name if choose name
             Log.d(TAG, "get location by name");
         }
 
         Log.d(TAG, "starting service");
-        startService(intent);
+        startService(intent);  //start intent, it's gonna run in background
     }
 
-
+//define this receiver class in the file you're working on
     class AddressResultReceiver extends ResultReceiver{
         public AddressResultReceiver(Handler handler){
             super(handler);
@@ -170,15 +170,16 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
 
         @Override
         protected void onReceiveResult(int resultCode, final Bundle resultData) {
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                final Address address = resultData.getParcelable(Constants.RESULT_DATA);
+            if (resultCode == Constants.SUCCESS_RESULT) { //when the thing is done, result is passed back here
+                final Address address = resultData.getParcelable(Constants.RESULT_DATA); //this retrieve the address
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
+                    public void run() {  //this part is where you put whatever you want to do
                         Log.d(TAG, "on receive result");
                         longitude = address.getLongitude();
                         latitude = address.getLatitude();
                         location = resultData.getString(Constants.RESULT_DATA_KEY);
+                        Log.d(TAG, address.getAdminArea()+","+address.getSubLocality()+","+address.getSubAdminArea());
                         Log.d(TAG, "on receive result "+longitude+", "+latitude+", "+location);
                         addAlert(name, category, location, latitude, longitude);
                         alertCreated();
