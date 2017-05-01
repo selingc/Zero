@@ -204,6 +204,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
 
     }
 
+
     class AddressResultReceiver extends ResultReceiver {
         public AddressResultReceiver(Handler handler){
             super(handler);
@@ -226,3 +227,4 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
         }
     }
 }
+
