@@ -12,10 +12,13 @@ public class Alert implements Serializable{
     public String location;
     public double latitude = -1;
     public double longitude = -1;
-    private String distance;
-    private String key;
+    public String key;
+    public int confirmed = 0;
+    public String distance = "";
+
     public Alert(){};
-    public Alert(String name, String category, String location, double latitude, double longitude){
+
+    public Alert(String name, String category, String location, double latitude, double longitude, String key, int confirmed){
         this.name = name;
         this.category = category;
         this.location = location;
@@ -23,26 +26,93 @@ public class Alert implements Serializable{
             this.latitude = latitude;
             this.longitude = longitude;
         }
-    }
-    public Alert(String name, String category, String location, String latitude, String longitude){
-            this(name, category, location, latitude != null && !latitude.equals("n/a") ? Double.valueOf(latitude): 0, longitude != null &&  !longitude.equals("n/a") ? Double.valueOf(longitude) : 0);
-    }
-    public void setKey(String key)
-    {
         this.key = key;
+        this.confirmed = confirmed;
     }
-    public String getKey()
-    {
+    public Alert(String name, String category, String location, String latitude, String longitude, String key, int confirmed){
+        double lat = 0, longi = 0;
+        if(latitude != null && !latitude.equals("n/a"))
+            lat = Double.valueOf(latitude);
+        else lat = 0;
+
+        if(longitude != null &&  !longitude.equals("n/a") )
+            longi = Double.valueOf(longitude);
+        else
+            longi = 0;
+        this.name = name;
+        this.category = category;
+        this.location = location;
+        this.latitude = lat;
+        this.longitude = longi;
+        this.key = key;
+        this.confirmed = confirmed;
+    }
+
+    public void incConfirm(){confirmed++;}
+    public void decConfirm(){confirmed--;}
+
+
+
+    //getters and setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getKey() {
         return key;
     }
-    public void setDistance(String distance)
-    {
-        this.distance = distance;
+
+    public void setKey(String key) {
+        this.key = key;
     }
-    public String getLoc()
-    {
-        return distance;
+
+    public int getConfirmed() {
+        return confirmed;
     }
+
+    public void setConfirmed(int confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public void setDistance(String distance){ this.distance = distance;}
+
+
     @Override
     public String toString()
     {

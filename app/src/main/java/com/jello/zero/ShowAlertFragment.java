@@ -44,6 +44,4 @@ public class ShowAlertFragment extends MainFragment{
     public Alert retrieveAlert(DataSnapshot snapshot) {
         return snapshot.getValue(Alert.class);
     }
-
-
 }

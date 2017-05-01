@@ -43,6 +43,24 @@
         android:layout_width="match_parent"
         android:layout_height="250sp"
         tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/confirm_number_view"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="@string/alert_confirm_view"
+            android:textAlignment="gravity"
+            />
+        <Button
+            android:id="@+id/viewAlert_confirm_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/button_viewAlert_confirm"
+            android:onClick="confirmAlert"
+            />
+    </LinearLayout>
 
 
 </LinearLayout>

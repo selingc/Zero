@@ -29,7 +29,9 @@ public class ShowFeedFragment extends MainFragment {
                 snapshot.child("description").getValue(String.class),
                 snapshot.child("location").getValue(String.class),
                 snapshot.child("latitude").getValue(String.class),
-                snapshot.child("longtitude").getValue(String.class)
+                snapshot.child("longtitude").getValue(String.class),
+                "",
+                0
         );
         return alert;
     }

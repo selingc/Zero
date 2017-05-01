@@ -97,14 +97,17 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
         Log.d(TAG, "add alert");
         Alert newAlert;
         if(mLastLocation == null){
-            newAlert = new Alert(name, category, location, latitude, longitude);
+            newAlert = new Alert(name, category, location, latitude, longitude, "", 0);
             Log.d(TAG, "addAlert mLastLocation null");
         }else{
-            newAlert = new Alert(name, category, location, mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            newAlert = new Alert(name, category, location, mLastLocation.getLatitude(), mLastLocation.getLongitude(), "", 0);
             Log.d(TAG, "addAlert location not null "+mLastLocation.getLatitude()+", "+mLastLocation.getLongitude());
         }
 
         DatabaseReference newAlertRef = alertsRef.push();
+        //set key for alert
+        String key = newAlertRef.getKey();
+        newAlert.setKey(key);
         newAlertRef.setValue(newAlert);
     }
 
