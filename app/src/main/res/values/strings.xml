@@ -20,4 +20,8 @@
     <string name="make_comment">Comment</string>
     <string name="button_viewAlert_confirm">Confirm</string>
     <string name="alert_confirm_view">No Confirm</string>
+    <string name="button_comment_alert">Comment</string>
+    <string name="comment_hint">Your comment...</string>
+    <string name="comment_post_button">Post</string>
 </resources>
+
