@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -57,8 +58,9 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     //List view stuff
     private ListView commentListView;
     private ChildEventListener commentListener;
-    private CommentListViewAdapter commentListViewAdapter;
-    private List<Comment> commentsListData;
+    //private CommentListViewAdapter commentListViewAdapter;
+    private List<String> commentsListData;
+    private ArrayAdapter<String> commentDefaultArrayAdapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,17 +101,21 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
 
     public void onStart(){
         super.onStart();
+        commentsListData = new ArrayList<String>();
         commentListView = (ListView) findViewById(R.id.comment_listView);
-        commentListViewAdapter = new CommentListViewAdapter(commentsListData, this.getApplicationContext());
-        commentListView.setAdapter(commentListViewAdapter);
+       // commentListViewAdapter = new CommentListViewAdapter(commentsListData, this.getApplicationContext());
+        commentDefaultArrayAdapter = new ArrayAdapter<String>(this, R.layout.comment_row, commentsListData);
+       // commentListView.setAdapter(commentListViewAdapter);
+        commentListView.setAdapter(commentDefaultArrayAdapter);
 
         commentListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Comment comment = dataSnapshot.getValue(Comment.class);
                 Log.d(TAG, "onChildAdded comment "+comment.toString());
-                commentsListData.add(comment);
-                commentListViewAdapter.notifyDataSetChanged();
+                commentsListData.add(comment.toString());
+               // commentListViewAdapter.notifyDataSetChanged();
+                commentDefaultArrayAdapter.notifyDataSetChanged();
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -124,7 +130,12 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     }
 
 
-
+    public void onStop(){
+        super.onStop();
+        commentReference.removeEventListener(commentListener);
+        commentsListData.clear();
+        commentDefaultArrayAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
