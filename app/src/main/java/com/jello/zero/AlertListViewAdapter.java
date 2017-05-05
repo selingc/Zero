@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,8 +18,14 @@ public class AlertListViewAdapter extends ArrayAdapter<Alert> implements View.On
     Context context;
 
     private static class ViewHolder {
-        TextView alertString;
-      //  Button confirmButton;
+        TextView alertContent;
+
+        //more stuff here
+        TextView alertCategory;
+        TextView alertLocation;
+        TextView alertDistant;
+        TextView alertConfirm;
+
     }
 
     public AlertListViewAdapter(List<Alert> data, Context context) {
@@ -49,7 +54,11 @@ public class AlertListViewAdapter extends ArrayAdapter<Alert> implements View.On
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.alert_row, parent, false);
-            viewHolder.alertString = (TextView) convertView.findViewById(R.id.alert_string);
+            viewHolder.alertContent = (TextView) convertView.findViewById(R.id.alert_content);
+            viewHolder.alertCategory = (TextView) convertView.findViewById(R.id.alert_category);
+            viewHolder.alertLocation = (TextView) convertView.findViewById(R.id.alert_location);
+            viewHolder.alertDistant = (TextView) convertView.findViewById(R.id.alert_distant);
+            viewHolder.alertConfirm = (TextView) convertView.findViewById(R.id.alert_confirm);
           //  viewHolder.confirmButton = (Button) convertView.findViewById(R.id.confirm_button);
             result=convertView;
 
@@ -59,7 +68,12 @@ public class AlertListViewAdapter extends ArrayAdapter<Alert> implements View.On
             result=convertView;
         }
 
-        viewHolder.alertString.setText(alert.toString());
+        //viewHolder.alertContent.setText(alert.toString());
+        viewHolder.alertContent.setText(alert.getName());
+        viewHolder.alertCategory.setText(alert.getCategory());
+        viewHolder.alertLocation.setText("Location:\n" + alert.getLocation());
+        viewHolder.alertDistant.setText(alert.distance);
+        viewHolder.alertConfirm.setText(alert.getConfirmed() + " confirmed");
 
         // Return the completed view to render on screen
         return convertView;

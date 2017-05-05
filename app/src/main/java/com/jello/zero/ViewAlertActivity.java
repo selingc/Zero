@@ -3,11 +3,13 @@ package com.jello.zero;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -103,10 +105,29 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         super.onStart();
         commentsListData = new ArrayList<String>();
         commentListView = (ListView) findViewById(R.id.comment_listView);
-       // commentListViewAdapter = new CommentListViewAdapter(commentsListData, this.getApplicationContext());
+
         commentDefaultArrayAdapter = new ArrayAdapter<String>(this, R.layout.comment_row, commentsListData);
-       // commentListView.setAdapter(commentListViewAdapter);
+
         commentListView.setAdapter(commentDefaultArrayAdapter);
+
+
+        final ScrollView scrollView = (ScrollView)findViewById(R.id.comment_scrollview);
+        commentListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                scrollView.requestDisallowInterceptTouchEvent(true);
+
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_UP:
+                        scrollView.requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
+
 
         commentListener = new ChildEventListener() {
             @Override
@@ -171,9 +192,6 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         newCommentRef.setValue(newComment);
     }
 
-
-
-
     public boolean confirmAlert(View view){
         //preparation for updating list of confirmed user
         Map<String, Object> updatedConfirmedList = new HashMap<String, Object>();
@@ -232,7 +250,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         confirmNumberTextView.setText(theAlert.confirmed+"");
 
         //Temporary location
-        alertLocation.setText("Location: "+theAlert.latitude+","+theAlert.longitude);
+        alertLocation.setText("Location:\n"+theAlert.getLocation());
         setLoc(theAlert.latitude,theAlert.longitude);
 
         // Get the SupportMapFragment and request notification

@@ -115,9 +115,9 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                     Location alertLocation = new Location("");
                     alertLocation.setLatitude(newAlert.latitude);
                     alertLocation.setLongitude(newAlert.longitude);
-                    distance = Math.round(alertLocation.distanceTo(mLastLocation)) + " meters away from you!";
+                    distance = Math.round(alertLocation.distanceTo(mLastLocation))+" m away";
                 }else{
-                    distance = "Distance away from you cannot be detected.";
+                    distance = "Distance unavailable";
                 }
                 //newAlert.setKey(dataSnapshot.getKey());
                 newAlert.setDistance(distance);

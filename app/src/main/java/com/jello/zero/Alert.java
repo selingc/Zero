@@ -70,9 +70,7 @@ public class Alert implements Serializable{
         this.category = category;
     }
 
-    public String getLocation() {
-        return location;
-    }
+    public String getLocation() { return location;}
 
     public void setLocation(String location) {
         this.location = location;
@@ -116,6 +114,14 @@ public class Alert implements Serializable{
     @Override
     public String toString()
     {
-        return name + "\n" + category + "\nLocation: " + location + "\nCoordinates: " + latitude + ", " + longitude + "\n" + distance;
+        String newLoc = "";
+        String[] loc = location.split("\n");
+        for(String i : loc){
+            newLoc += i + " ";
+        }
+        return "Category: " + category + "\n\n"+
+                name + "\n" +
+                "Location: " + loc + "\n\n" +
+                distance;
     }
 }
