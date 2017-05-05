@@ -2,4 +2,5 @@
         android:id="@+id/comment_author_field"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:background="@drawable/cast_skip_ad_label_border"/>
