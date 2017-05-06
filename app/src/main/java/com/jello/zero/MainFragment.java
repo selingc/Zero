@@ -33,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -47,7 +49,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
     protected FirebaseAuth.AuthStateListener authListener;
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference alertRef = ref.child("alerts");
-    protected ArrayList<Alert> alertList = new ArrayList<>();
+    protected ArrayList<Alert> alertList = new ArrayList<Alert>();
     protected ListView listView;
     ChildEventListener alertListener;
     protected AlertListViewAdapter alertListApdapter;
@@ -115,7 +117,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                     Location alertLocation = new Location("");
                     alertLocation.setLatitude(newAlert.latitude);
                     alertLocation.setLongitude(newAlert.longitude);
-                    distance = Math.round(alertLocation.distanceTo(mLastLocation))+" m away";
+                    distance = Math.round(alertLocation.distanceTo(mLastLocation)*0.000621371)+"";
                 }else{
                     distance = "Distance unavailable";
                 }
@@ -123,6 +125,19 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                 newAlert.setDistance(distance);
                 String text = newAlert.toString();
                 alertList.add(newAlert);
+                Collections.sort(alertList, new Comparator<Alert>() {
+                    @Override
+                    public int compare(Alert o1, Alert o2) {
+                        int distance = o1.getDistance() - o2.getDistance();
+                        if(distance == 0){
+                            return -(o1.confirmed - o2.confirmed);
+                        }else return distance;
+                       /* if(o1.distance.equals(o2.distance))
+                            return -(o1.confirmed - o2.confirmed);
+                        Log.d(TAG, "comparator");
+                        return (int) (Double.parseDouble(o1.distance) - Double.parseDouble(o1.distance));*/
+                    }
+                });
                 alertListApdapter.notifyDataSetChanged();
             }
             @Override

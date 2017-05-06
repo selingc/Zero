@@ -1,6 +1,8 @@
 package com.jello.zero;
 
+import java.io.InterruptedIOException;
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by hoangphat1908 on 3/5/2017.
@@ -50,8 +52,6 @@ public class Alert implements Serializable{
 
     public void incConfirm(){confirmed++;}
     public void decConfirm(){confirmed--;}
-
-
 
     //getters and setters
     public String getName() {
@@ -109,6 +109,10 @@ public class Alert implements Serializable{
     }
 
     public void setDistance(String distance){ this.distance = distance;}
+
+    public int getDistance(){
+        return Integer.parseInt(this.distance);
+    }
 
 
     @Override
