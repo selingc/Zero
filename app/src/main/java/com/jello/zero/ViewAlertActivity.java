@@ -168,8 +168,8 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     public void onStop(){
         super.onStop();
         commentReference.removeEventListener(commentListener);
-        commentsListData.clear();
-        commentDefaultArrayAdapter.notifyDataSetChanged();
+      //  commentsListData.clear();
+      //  commentDefaultArrayAdapter.notifyDataSetChanged();
     }
 
     @Override
