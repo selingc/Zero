@@ -23,4 +23,8 @@
     <string name="alert_check">Show Alerts</string>
     <string name="feed_check">Show Feeds</string>
     <string name="action_create_alert">Create an Alert</string>
+    <string name="button_comment_alert">Comment</string>
+    <string name="comment_hint">Your comment...</string>
+    <string name="comment_post_button">Post</string>
 </resources>
+

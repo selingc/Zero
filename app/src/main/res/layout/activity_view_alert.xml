@@ -60,7 +60,42 @@
             android:text="@string/button_viewAlert_confirm"
             android:onClick="confirmAlert"
             />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_comment_alert"
+            android:onClick="commentButtonClick"
+            />
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/comment_editText"
+            android:layout_weight="0.8"
+            android:layout_width="80dp"
+            android:layout_height="48dp"
+            android:hint="@string/comment_hint"
+            android:visibility="invisible"/>
+        <Button
+            android:id="@+id/comment_post_button"
+            android:layout_weight="0.2"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="@string/comment_post_button"
+            android:visibility="invisible"
+            android:onClick="postComment"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/comment_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></ListView>
+
+
 
 
 </LinearLayout>

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,13 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     private Set<String> confirmUserList = new HashSet<String>();
     private String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     private Button confirmButton = null;
+    private DatabaseReference commentReference;
+
+    //List view stuff
+    private ListView commentListView;
+    private ChildEventListener commentListener;
+    private CommentListViewAdapter commentListViewAdapter;
+    private List<Comment> commentsListData;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +71,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         //reference for theAlert and the confirm list
         confirmListReference = FirebaseDatabase.getInstance().getReference().child("confirm").child(theAlert.key);
         alertListReference = FirebaseDatabase.getInstance().getReference().child("alerts").child(theAlert.key);
+        commentReference = FirebaseDatabase.getInstance().getReference().child("comments").child(theAlert.key);
 
         //get list of users who have confirmed theAlert
         confirmListReference.child("users").addValueEventListener(new ValueEventListener() {
@@ -87,6 +97,35 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         });
     }
 
+    public void onStart(){
+        super.onStart();
+        commentListView = (ListView) findViewById(R.id.comment_listView);
+        commentListViewAdapter = new CommentListViewAdapter(commentsListData, this.getApplicationContext());
+        commentListView.setAdapter(commentListViewAdapter);
+
+        commentListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Comment comment = dataSnapshot.getValue(Comment.class);
+                Log.d(TAG, "onChildAdded comment "+comment.toString());
+                commentsListData.add(comment);
+                commentListViewAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        commentReference.addChildEventListener(commentListener);
+    }
+
+
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(location).title("Marker in Location"));
@@ -97,6 +136,32 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     {
         this.location = new LatLng(latitude,longitude);
     }
+
+    public void commentButtonClick(View view){
+        Log.d(TAG, "comment button clicked");
+        EditText commentField = (EditText) findViewById(R.id.comment_editText);
+        Button commentPostButton = (Button) findViewById(R.id.comment_post_button);
+        commentField.setVisibility(View.VISIBLE);
+        commentPostButton.setVisibility(View.VISIBLE);
+    }
+
+    public void postComment(View view){
+        EditText commentField = (EditText) findViewById(R.id.comment_editText);
+        Button commentPostButton = (Button) findViewById(R.id.comment_post_button);
+        commentField.setVisibility(View.GONE);
+        commentPostButton.setVisibility(View.GONE);
+
+        String author = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String content = commentField.getText().toString();
+
+        Comment newComment = new Comment(content, author);
+
+        DatabaseReference newCommentRef =  commentReference.push();
+        newCommentRef.setValue(newComment);
+    }
+
+
+
 
     public boolean confirmAlert(View view){
         //preparation for updating list of confirmed user
