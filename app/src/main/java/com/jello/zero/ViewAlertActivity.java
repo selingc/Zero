@@ -1,12 +1,19 @@
 package com.jello.zero;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.internal.IProjectionDelegate;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.text.Line;
 import com.google.android.gms.vision.text.Text;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -32,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.Inflater;
 
 /**
  * Created by hoangphat1908 on 3/19/2017.
@@ -54,11 +63,14 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     private Button confirmButton = null;
     private DatabaseReference commentReference;
 
+
     //List view stuff
     private ListView commentListView;
     private ChildEventListener commentListener;
-    private CommentListViewAdapter commentListViewAdapter;
-    private List<Comment> commentsListData;
+    //private CommentListViewAdapter commentListViewAdapter;
+    private List<String> commentsListData;
+    private ArrayAdapter<String> commentDefaultArrayAdapter;
+    private LayoutInflater inflater;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,17 +111,46 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
 
     public void onStart(){
         super.onStart();
+        /*
+        commentsListData = new ArrayList<String>();
         commentListView = (ListView) findViewById(R.id.comment_listView);
-        commentListViewAdapter = new CommentListViewAdapter(commentsListData, this.getApplicationContext());
-        commentListView.setAdapter(commentListViewAdapter);
+        commentDefaultArrayAdapter = new ArrayAdapter<String>(this, R.layout.comment_row, commentsListData);
+        commentListView.setAdapter(commentDefaultArrayAdapter);
+        final ScrollView scrollView = (ScrollView)findViewById(R.id.comment_scrollview);
+        commentListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
+                scrollView.requestDisallowInterceptTouchEvent(true);
+
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_UP:
+                        scrollView.requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
+        */
+        Context context = this.getApplicationContext();
+
+        final LinearLayout list = (LinearLayout) findViewById(R.id.comment_linearview);
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         commentListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Comment comment = dataSnapshot.getValue(Comment.class);
                 Log.d(TAG, "onChildAdded comment "+comment.toString());
-                commentsListData.add(comment);
-                commentListViewAdapter.notifyDataSetChanged();
+                /*
+                commentsListData.add(comment.toString());
+               // commentListViewAdapter.notifyDataSetChanged();
+                commentDefaultArrayAdapter.notifyDataSetChanged();*/
+                View vi = inflater.inflate(R.layout.comment_row, null);
+                TextView text = (TextView) vi.findViewById(R.id.comment_author_field);
+                text.setText(comment.toString());
+                text.setTextColor(Color.BLACK);
+                list.addView(vi);
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -124,7 +165,12 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     }
 
 
-
+    public void onStop(){
+        super.onStop();
+        commentReference.removeEventListener(commentListener);
+      //  commentsListData.clear();
+      //  commentDefaultArrayAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -159,9 +205,6 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         DatabaseReference newCommentRef =  commentReference.push();
         newCommentRef.setValue(newComment);
     }
-
-
-
 
     public boolean confirmAlert(View view){
         //preparation for updating list of confirmed user
@@ -221,7 +264,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         confirmNumberTextView.setText(theAlert.confirmed+"");
 
         //Temporary location
-        alertLocation.setText("Location: "+theAlert.latitude+","+theAlert.longitude);
+        alertLocation.setText("Location:\n"+theAlert.getLocation());
         setLoc(theAlert.latitude,theAlert.longitude);
 
         // Get the SupportMapFragment and request notification

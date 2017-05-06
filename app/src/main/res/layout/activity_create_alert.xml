@@ -3,19 +3,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-        android:id="@+id/name_alert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/alert_name_field" />
-    <EditText
         android:id="@+id/category_alert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/alert_category_field" />
     <EditText
+        android:id="@+id/name_alert"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="top"
+        android:textAlignment="gravity"
+        android:hint="@string/alert_name_field"/>
+    <EditText
         android:id="@+id/location_alert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="top"
+        android:textAlignment="gravity"
         android:hint="@string/alert_location_field" />
 
     <Button
