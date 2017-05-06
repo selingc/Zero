@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/mapFragmentContainer">
+
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/alertCheck"
+            android:layout_width="150sp"
+            android:layout_height="50sp"
+            android:layout_marginLeft="20sp"
+            android:checked="true"
+            android:text="@string/alert_check"/>
+
+        <CheckBox
+            android:id="@+id/feedCheck"
+            android:layout_width="150sp"
+            android:layout_height="50sp"
+            android:layout_weight="1"
+            android:text="@string/feed_check"/>
+
+    </LinearLayout>
+</LinearLayout>
+
+

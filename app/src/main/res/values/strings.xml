@@ -20,4 +20,7 @@
     <string name="make_comment">Comment</string>
     <string name="button_viewAlert_confirm">Confirm</string>
     <string name="alert_confirm_view">No Confirm</string>
+    <string name="alert_check">Show Alerts</string>
+    <string name="feed_check">Show Feeds</string>
+    <string name="action_create_alert">Create an Alert</string>
 </resources>

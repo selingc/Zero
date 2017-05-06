@@ -2,8 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.hoangphat1908.myapplication.MainActivity" >
+    <item android:id="@+id/action_create_alert"
+        android:icon="@android:drawable/ic_input_add"
+        android:orderInCategory="101"
+        android:title="@string/action_create_alert"
+        app:showAsAction="ifRoom" />
     <item android:id="@+id/action_sign_out"
         android:title="@string/action_sign_out"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         app:showAsAction="never" />
 </menu>

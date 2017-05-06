@@ -20,18 +20,21 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // Return a PlaceholderFragment (defined as a static inner class below).
         MainFragment alertFragment = new ShowAlertFragment();
         MainFragment feedFragment = new ShowFeedFragment();
+        AlertMapFragment alertMapFragment = new AlertMapFragment();
         switch (position) {
             case 0:
                 return alertFragment.newInstance(1);
-            default:
+            case 1:
                 return feedFragment.newInstance(2);
+            default:
+                return alertMapFragment.newInstance(3);
         }
     }
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
-        return 2;
+        // Show 3 total pages.
+        return 3;
     }
 
     @Override
@@ -41,6 +44,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return "ALERTS";
             case 1:
                 return "FEEDS";
+            case 2:
+                return "AREA";
         }
         return null;
     }

@@ -67,7 +67,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-
+        listView = (ListView)rootView.findViewById(R.id.alertListView);
         auth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuth.AuthStateListener(){
             @Override
@@ -101,7 +101,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
         mGoogleApiClient.connect();
         auth.addAuthStateListener(authListener);
 
-        listView = (ListView)getView().findViewById(R.id.alertListView);
+
         alertListApdapter = new AlertListViewAdapter(alertList, this.getContext());
         listView.setAdapter(alertListApdapter);
         alertListener = new ChildEventListener() {
