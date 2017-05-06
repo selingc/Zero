@@ -154,7 +154,7 @@ public class MyMapFragment extends SupportMapFragment implements OnMapReadyCallb
         for(Alert alert : alertList){
             Marker aMarker =   mGoogleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(alert.getLatitude(), alert.getLongitude()))
-                        .title(alert.name)
+                        .title(alert.category)
                         .icon(BitmapDescriptorFactory.defaultMarker(getMarkerStyle(alert.confirmed))));
             aMarker.setTag(alert);
             alertMarkers.add(aMarker);
@@ -163,7 +163,7 @@ public class MyMapFragment extends SupportMapFragment implements OnMapReadyCallb
         for(Alert alert : feedList){
             Marker aMarker =   mGoogleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(alert.getLatitude(), alert.getLongitude()))
-                    .title(alert.name)
+                    .title(alert.category)
                     .icon(BitmapDescriptorFactory.defaultMarker(getMarkerStyle(alert.confirmed))).visible(false));
             aMarker.showInfoWindow();
             aMarker.setTag(alert);

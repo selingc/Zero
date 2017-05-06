@@ -1,101 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comment_scrollview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
     android:orientation="vertical">
 
-    <TextView
-        android:textSize="32sp"
-        android:textColor="#ff0000"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/alert_view_header" />
-
-    <TextView
-        android:id="@+id/alertViewTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Alert Title"
-        android:textSize="28sp" />
-
-    <TextView
-        android:id="@+id/alertViewCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:text="Alert Category" />
-
-    <TextView
-        android:id="@+id/alertViewLocation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20sp"
-        android:text="Alert Location"
-        android:textSize="20sp" />
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="250sp"
-        tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
-            android:id="@+id/confirm_number_view"
-            android:layout_width="32dp"
-            android:layout_height="match_parent"
-            android:text="@string/alert_confirm_view"
-            android:textAlignment="gravity"
-            />
-        <Button
-            android:id="@+id/viewAlert_confirm_button"
+            android:id="@+id/alertViewCategory"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/button_viewAlert_confirm"
-            android:onClick="confirmAlert"
-            />
-        <Button
-            android:layout_width="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Alert Category"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/alertViewTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_comment_alert"
-            android:onClick="commentButtonClick"
-            />
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Alert Content"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/alertViewLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textSize="16sp"
+            android:text="Alert Location" />
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="224sp"
+            android:layout_margin="8dp"
+            tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/confirm_number_view"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/alert_confirm_view"
+                android:textAlignment="gravity"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/viewAlert_confirm_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:onClick="confirmAlert"
+                android:text="@string/button_viewAlert_confirm"
+                android:textSize="12sp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:onClick="commentButtonClick"
+                android:text="@string/button_comment_alert"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <EditText
+                android:id="@+id/comment_editText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:hint="@string/comment_hint"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/comment_post_button"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:minHeight="0dp"
+                android:onClick="postComment"
+                android:text="@string/comment_post_button"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:textStyle="bold"/>
+        <LinearLayout
+            android:id="@+id/comment_linearview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/comment_editText"
-            android:layout_weight="0.8"
-            android:layout_width="80dp"
-            android:layout_height="48dp"
-            android:hint="@string/comment_hint"
-            android:visibility="invisible"/>
-        <Button
-            android:id="@+id/comment_post_button"
-            android:layout_weight="0.2"
-            android:layout_width="32dp"
-            android:layout_height="match_parent"
-            android:text="@string/comment_post_button"
-            android:visibility="invisible"
-            android:onClick="postComment"/>
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/comment_listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
-
-
-
-
-</LinearLayout>
+</ScrollView>

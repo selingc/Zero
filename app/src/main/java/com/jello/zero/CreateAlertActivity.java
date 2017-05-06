@@ -147,7 +147,7 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
         if (mLastLocation != null) {
             String latitude = String.valueOf(mLastLocation.getLatitude());
             String longitude = String.valueOf(mLastLocation.getLongitude());
-            ((EditText) findViewById(R.id.location_alert)).setHint("Type or use current location: " + latitude + "," + longitude);
+            ((EditText) findViewById(R.id.location_alert)).setHint("Type or use current location");
         }
     }
 

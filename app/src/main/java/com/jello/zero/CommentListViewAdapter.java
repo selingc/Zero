@@ -1,4 +1,4 @@
-package com.jello.zero;
+/*package com.jello.zero;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by kimpham on 5/2/17.
  */
-
+/*
 public class CommentListViewAdapter extends ArrayAdapter<Comment> implements View.OnClickListener{
     private List<Comment> commentList;
     Context context;
@@ -55,3 +55,4 @@ public class CommentListViewAdapter extends ArrayAdapter<Comment> implements Vie
 
 
 }
+*/

@@ -12,6 +12,7 @@ public class Comment {
 
     public Comment(String content, String author){
         this.content = content;
+        if(author==null) this.author = "not available";
         this.author = author;
     }
 
