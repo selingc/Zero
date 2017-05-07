@@ -77,7 +77,7 @@ public class AlertListViewAdapter extends ArrayAdapter<Alert> implements View.On
         }else{
             viewHolder.alertDistant.setText(alert.distance + " miles away from you");
         }
-        viewHolder.alertConfirm.setText("Verified by " + alert.getConfirmed());
+        viewHolder.alertConfirm.setText(alert.getConfirmed() != 0 ?"Verified by " + alert.getConfirmed() : "");
 
         // Return the completed view to render on screen
         return convertView;
