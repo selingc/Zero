@@ -119,7 +119,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                     alertLocation.setLongitude(newAlert.longitude);
                     distance = Math.round(alertLocation.distanceTo(mLastLocation)*0.000621371)+"";
                 }else{
-                    distance = "Distance unavailable";
+                    distance = "-1";
                 }
                 //newAlert.setKey(dataSnapshot.getKey());
                 newAlert.setDistance(distance);

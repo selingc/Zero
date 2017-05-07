@@ -50,13 +50,9 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     private LatLng location = new LatLng(0,0);
     private String TAG = "ViewAlertActivity";
     private SupportMapFragment mapFragment;
-    private GoogleMap googleMap;
     private Alert theAlert;
-    private ChildEventListener confirmlistener;
     private DatabaseReference confirmListReference;
     private DatabaseReference alertListReference;
-    private List<String> confirmedUser;
-    private TextView confirmNumberTextView = null;
     private boolean wasConfirmed = false;
     private Set<String> confirmUserList = new HashSet<String>();
     private String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -67,6 +63,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     //List view stuff
     private ListView commentListView;
     private ChildEventListener commentListener;
+    private ChildEventListener confirmedUserListener;
     //private CommentListViewAdapter commentListViewAdapter;
     private List<String> commentsListData;
     private ArrayAdapter<String> commentDefaultArrayAdapter;
@@ -77,8 +74,8 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         setContentView(R.layout.activity_view_alert);
 
         theAlert = (Alert) getIntent().getSerializableExtra("alert");
-        setView();
         confirmButton = (Button)findViewById(R.id.viewAlert_confirm_button);
+        setView();
 
         //reference for theAlert and the confirm list
         confirmListReference = FirebaseDatabase.getInstance().getReference().child("confirm").child(theAlert.key);
@@ -86,53 +83,32 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         commentReference = FirebaseDatabase.getInstance().getReference().child("comments").child(theAlert.key);
 
         //get list of users who have confirmed theAlert
-        confirmListReference.child("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot confirmSnapshot: dataSnapshot.getChildren()) {
-                    confirmUserList.add(confirmSnapshot.getValue().toString());
-                    Log.d(TAG, "snapshot val "+ confirmSnapshot.getValue().toString());
-                }
+        confirmedUserListener = new ChildEventListener() {
 
-                //if current user is in this list, set wasConfirmed to true
-                if(confirmUserList.contains(currentUserEmail)) {
-                    confirmButton.setText("Unconfirmed");
-                    wasConfirmed = true;
-                    Log.d(TAG,"" +  wasConfirmed + confirmButton.getText());
-                }
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                confirmUserList.add(dataSnapshot.getValue().toString());
+                setView();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
 
-            }
-        });
-    }
-
-    public void onStart(){
-        super.onStart();
-        /*
-        commentsListData = new ArrayList<String>();
-        commentListView = (ListView) findViewById(R.id.comment_listView);
-        commentDefaultArrayAdapter = new ArrayAdapter<String>(this, R.layout.comment_row, commentsListData);
-        commentListView.setAdapter(commentDefaultArrayAdapter);
-        final ScrollView scrollView = (ScrollView)findViewById(R.id.comment_scrollview);
-        commentListView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                scrollView.requestDisallowInterceptTouchEvent(true);
-
-                int action = event.getActionMasked();
-                switch (action) {
-                    case MotionEvent.ACTION_UP:
-                        scrollView.requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-                return false;
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                confirmUserList.remove(dataSnapshot.getValue().toString());
+                setView();
             }
-        });
-        */
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+
+        confirmListReference.child("users").addChildEventListener(confirmedUserListener);
+
         Context context = this.getApplicationContext();
 
         final LinearLayout list = (LinearLayout) findViewById(R.id.comment_linearview);
@@ -147,9 +123,12 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
                // commentListViewAdapter.notifyDataSetChanged();
                 commentDefaultArrayAdapter.notifyDataSetChanged();*/
                 View vi = inflater.inflate(R.layout.comment_row, null);
-                TextView text = (TextView) vi.findViewById(R.id.comment_author_field);
-                text.setText(comment.toString());
-                text.setTextColor(Color.BLACK);
+                TextView content = (TextView) vi.findViewById(R.id.comment_body_field);
+                content.setText(comment.getContent());
+                content.setTextColor(Color.GRAY);
+                TextView author = (TextView) vi.findViewById(R.id.comment_author_field);
+                author.setText("@" + comment.getAuthor());
+                author.setTextColor(Color.BLACK);
                 list.addView(vi);
             }
             @Override
@@ -164,10 +143,10 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         commentReference.addChildEventListener(commentListener);
     }
 
-
     public void onStop(){
         super.onStop();
         commentReference.removeEventListener(commentListener);
+        confirmListReference.child("users").removeEventListener(confirmedUserListener);
       //  commentsListData.clear();
       //  commentDefaultArrayAdapter.notifyDataSetChanged();
     }
@@ -197,7 +176,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         commentField.setVisibility(View.GONE);
         commentPostButton.setVisibility(View.GONE);
 
-        String author = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String author = currentUserEmail.substring(0, currentUserEmail.indexOf("@"));
         String content = commentField.getText().toString();
 
         Comment newComment = new Comment(content, author);
@@ -220,9 +199,8 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
             theAlert.incConfirm();
             wasConfirmed=true;
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Alert confirmed", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Alert verified", Toast.LENGTH_SHORT);
             toast.show();
-            confirmButton.setText("Unconfirm");
         }else{  //alert is already confirmed by this user, handle unconfirm
             //remove user from list
             confirmUserList.remove(currentUserEmail);
@@ -232,10 +210,10 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
             theAlert.decConfirm();
             wasConfirmed=false;
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Alert unconfirmed", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Alert unverified", Toast.LENGTH_SHORT);
             toast.show();
 
-            confirmButton.setText("Confirm");
+            confirmButton.setText("Verify" + " (" + theAlert.confirmed + ")");
         }
 
         //update Alert's confirm number
@@ -247,9 +225,6 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         Log.d(TAG, usersList.toString());
         updatedConfirmedList.put("users", usersList);
         confirmListReference.updateChildren(updatedConfirmedList);
-
-        //update view
-        confirmNumberTextView.setText(theAlert.confirmed + "");
         return true;
     }
 
@@ -257,11 +232,16 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         final TextView alertTitle = (TextView)findViewById(R.id.alertViewTitle);
         final TextView alertCategory = (TextView)findViewById(R.id.alertViewCategory);
         final TextView alertLocation = (TextView)findViewById(R.id.alertViewLocation);
-        confirmNumberTextView = (TextView)findViewById(R.id.confirm_number_view);
+        if(confirmUserList.contains(currentUserEmail)){
+            confirmButton.setText("Unverify" + " (" + theAlert.confirmed + ")");
+            wasConfirmed = true;
+        }else{
+            confirmButton.setText("Verify" + " (" + theAlert.confirmed + ")");
+            wasConfirmed = false;
+        }
 
         alertTitle.setText(theAlert.name);
         alertCategory.setText(theAlert.category);
-        confirmNumberTextView.setText(theAlert.confirmed+"");
 
         //Temporary location
         alertLocation.setText("Location:\n"+theAlert.getLocation());

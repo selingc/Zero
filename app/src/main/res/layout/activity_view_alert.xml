@@ -55,15 +55,6 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
 
-            <TextView
-                android:id="@+id/confirm_number_view"
-                android:layout_width="32dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/alert_confirm_view"
-                android:textAlignment="gravity"
-                android:textSize="12sp" />
-
             <Button
                 android:id="@+id/viewAlert_confirm_button"
                 android:layout_width="wrap_content"
@@ -81,6 +72,19 @@
                 android:text="@string/button_comment_alert"
                 android:textSize="12sp" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:textStyle="bold"/>
+        <LinearLayout
+            android:id="@+id/comment_linearview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,19 +113,6 @@
                 android:textSize="16sp"
                 android:visibility="invisible" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Comments"
-            android:textSize="16sp"
-            android:padding="8dp"
-            android:textStyle="bold"/>
-        <LinearLayout
-            android:id="@+id/comment_linearview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
     </LinearLayout>
 
 </ScrollView>

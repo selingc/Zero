@@ -111,7 +111,11 @@ public class Alert implements Serializable{
     public void setDistance(String distance){ this.distance = distance;}
 
     public int getDistance(){
-        return Integer.parseInt(this.distance);
+        try {
+            return Integer.parseInt(this.distance);
+        }catch(Exception e){
+            return 0;
+        }
     }
 
 

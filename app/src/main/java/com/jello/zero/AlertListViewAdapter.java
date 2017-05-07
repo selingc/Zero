@@ -71,9 +71,13 @@ public class AlertListViewAdapter extends ArrayAdapter<Alert> implements View.On
         //viewHolder.alertContent.setText(alert.toString());
         viewHolder.alertContent.setText(alert.getName());
         viewHolder.alertCategory.setText(alert.getCategory());
-        viewHolder.alertLocation.setText("Location:\n" + alert.getLocation());
-        viewHolder.alertDistant.setText(alert.distance);
-        viewHolder.alertConfirm.setText(alert.getConfirmed() + " confirmed");
+        viewHolder.alertLocation.setText(alert.getLocation());
+        if(alert.distance.equals("-1")){
+            viewHolder.alertDistant.setText("Distance away unknown.");
+        }else{
+            viewHolder.alertDistant.setText(alert.distance + " miles away from you");
+        }
+        viewHolder.alertConfirm.setText("Verified by " + alert.getConfirmed());
 
         // Return the completed view to render on screen
         return convertView;
