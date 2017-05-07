@@ -3,6 +3,7 @@ package com.jello.zero;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,6 +59,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
     private String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
     private Button confirmButton = null;
     private DatabaseReference commentReference;
+    private String alertType="";
 
 
     //List view stuff
@@ -76,7 +78,7 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
         theAlert = (Alert) getIntent().getSerializableExtra("alert");
         confirmButton = (Button)findViewById(R.id.viewAlert_confirm_button);
         setView();
-
+        alertType = (String) getIntent().getSerializableExtra("type");
         //reference for theAlert and the confirm list
         confirmListReference = FirebaseDatabase.getInstance().getReference().child("confirm").child(theAlert.key);
         alertListReference = FirebaseDatabase.getInstance().getReference().child("alerts").child(theAlert.key);
@@ -141,6 +143,13 @@ public class ViewAlertActivity extends AppCompatActivity  implements OnMapReadyC
             public void onCancelled(DatabaseError databaseError) {}
         };
         commentReference.addChildEventListener(commentListener);
+
+        if(alertType.equals("feed")){
+            confirmButton.setVisibility(View.GONE);
+            ((Button) findViewById(R.id.viewAlert_comment_button)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.viewAlert_comments_text)).setVisibility(View.GONE);
+            ((LinearLayout) findViewById(R.id.comment_linearview)).setVisibility(View.GONE);
+        }
     }
 
     public void onStop(){

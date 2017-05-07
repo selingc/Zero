@@ -154,7 +154,8 @@ public class MyMapFragment extends SupportMapFragment implements OnMapReadyCallb
         for(Alert alert : alertList){
             Marker aMarker =   mGoogleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(alert.getLatitude(), alert.getLongitude()))
-                        .title(alert.category)
+                        .title("Alert: "+alert.category)
+                        .snippet("Confirmed by "+alert.confirmed)
                         .icon(BitmapDescriptorFactory.defaultMarker(getMarkerStyle(alert.confirmed))));
             aMarker.setTag(alert);
             alertMarkers.add(aMarker);
@@ -165,7 +166,6 @@ public class MyMapFragment extends SupportMapFragment implements OnMapReadyCallb
                     .position(new LatLng(alert.getLatitude(), alert.getLongitude()))
                     .title(alert.category)
                     .icon(BitmapDescriptorFactory.defaultMarker(getMarkerStyle(alert.confirmed))).visible(false));
-            aMarker.showInfoWindow();
             aMarker.setTag(alert);
             feedMarkers.add(aMarker);
 
@@ -178,6 +178,9 @@ public class MyMapFragment extends SupportMapFragment implements OnMapReadyCallb
                     Alert value = (Alert) marker.getTag();
                     Intent intent = new Intent(getActivity(), ViewAlertActivity.class);
                     intent.putExtra("alert", value);
+                    if(marker.getSnippet()!=null)
+                        intent.putExtra("type", "alerts");
+                    else intent.putExtra("type", "feed");
                     startActivity(intent);
                 }
 

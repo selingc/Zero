@@ -163,6 +163,7 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                 Alert value = (Alert)adapter.getItemAtPosition(position);
                 Intent intent = new Intent(MainFragment.this.getActivity(), ViewAlertActivity.class);
                 intent.putExtra("alert", value);
+                intent.putExtra("type", getAlertReference());
                 startActivity(intent);
             }
         });

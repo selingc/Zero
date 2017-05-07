@@ -65,6 +65,7 @@
                 android:textSize="12sp" />
 
             <Button
+                android:id="@+id/viewAlert_comment_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minHeight="0dp"
@@ -74,6 +75,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/viewAlert_comments_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Comments"
