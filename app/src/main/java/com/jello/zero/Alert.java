@@ -30,6 +30,7 @@ public class Alert implements Serializable{
         }
         this.key = key;
         this.confirmed = confirmed;
+        this.distance = "1";
     }
     public Alert(String name, String category, String location, String latitude, String longitude, String key, int confirmed){
         double lat = 0, longi = 0;
@@ -48,6 +49,7 @@ public class Alert implements Serializable{
         this.longitude = longi;
         this.key = key;
         this.confirmed = confirmed;
+        this.distance = "1";
     }
 
     public void incConfirm(){confirmed++;}
@@ -110,14 +112,9 @@ public class Alert implements Serializable{
 
     public void setDistance(String distance){ this.distance = distance;}
 
-    public int getDistance(){
-        try {
-            return Integer.parseInt(this.distance);
-        }catch(Exception e){
-            return 0;
-        }
+    public String getDistance(){
+        return this.distance;
     }
-
 
     @Override
     public String toString()

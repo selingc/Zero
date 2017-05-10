@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -128,7 +127,10 @@ public abstract class MainFragment extends Fragment implements GoogleApiClient.C
                 Collections.sort(alertList, new Comparator<Alert>() {
                     @Override
                     public int compare(Alert o1, Alert o2) {
-                        int distance = o1.getDistance() - o2.getDistance();
+
+                        int d1 = Integer.parseInt(o1.getDistance());
+                        int d2 = Integer.parseInt(o2.getDistance());
+                        int distance = d1 - d2;
                         if(distance == 0){
                             return -(o1.confirmed - o2.confirmed);
                         }else return distance;

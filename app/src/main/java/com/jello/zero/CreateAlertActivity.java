@@ -110,6 +110,7 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
 
         DatabaseReference newAlertRef = alertsRef.push();
         //set key for alert
+        Log.d(TAG, newAlert.distance + newAlert.distance.getClass());
         String key = newAlertRef.getKey();
         newAlert.setKey(key);
         newAlertRef.setValue(newAlert);
