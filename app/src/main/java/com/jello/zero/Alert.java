@@ -129,4 +129,8 @@ public class Alert implements Serializable{
                 "Location: " + loc + "\n\n" +
                 distance;
     }
+
+    public String toNotificationString(){
+        return category + ": " + location;
+    }
 }

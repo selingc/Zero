@@ -114,7 +114,7 @@ public class CreateAlertActivity extends AppCompatActivity implements GoogleApiC
         String key = newAlertRef.getKey();
         newAlert.setKey(key);
         newAlertRef.setValue(newAlert);
-        sendNotificationToLocation(cityState, newAlertRef.getKey());
+        sendNotificationToLocation(cityState, newAlert.toNotificationString());
     }
 
     public void sendNotificationToLocation(String cityState, String key){
